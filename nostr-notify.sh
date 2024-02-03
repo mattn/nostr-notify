@@ -14,5 +14,6 @@ echo '' | nak req -stream -k 1 -s now ${relay} 2> /dev/null | while read -r LINE
     gm convert "${base_dir}/profiles/${pubkey}.tmp" -resize 200x200 "${base_dir}/profiles/${pubkey}.png" > /dev/null 2>&1
     rm -f "${base_dir}/profiles/${pubkey}.tmp"
   fi
-  notify-send -h string:x-canonical-private-synchronous:nostr -c im -h int:transient:1 -h "string:image-path:${base_dir}/profiles/${pubkey}.png" "${relay}" "${content}"
+  display_name=$(cat "${base_dir}/profiles/${pubkey}.json" | jq -r '.content | fromjson | .display_name')
+  notify-send -h string:x-canonical-private-synchronous:nostr -c im -h int:transient:1 -h "string:image-path:${base_dir}/profiles/${pubkey}.png" "${display_name}" "${content}"
 done
